@@ -3,8 +3,8 @@ import { TwitterApi } from "twitter-api-v2";
 
 const twitterClient = new TwitterApi({
   appKey: process.env.TWITTER_API_KEY ?? "",
-  appSecret: process.env.TWITTER_API_SECRET ?? "", // Ensure this environment variable is set
-  accessToken: process.env.TWITTER_ACCESS_TOKEN ?? "", // Ensure this environment variable is set,
+  appSecret: process.env.TWITTER_API_SECRET ?? "", 
+  accessToken: process.env.TWITTER_ACCESS_TOKEN ?? "", 
   accessSecret: process.env.TWITTER_TOKEN_SECRET ?? "",
 });
 
@@ -23,7 +23,6 @@ export async function GET(req: Request) {
     // Add the current date to the project data
     randomProject.date = new Date().toISOString();
 
-    // Add link to moisestrejo.com
     randomProject.link = `https://moisestrejo.com/${randomProject.id}`;
     const message = `
 ${randomProject.name}
