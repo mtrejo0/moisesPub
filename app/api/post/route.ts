@@ -1,5 +1,6 @@
 import axios from "axios";
 import { TwitterApi } from "twitter-api-v2";
+import { revalidateTag } from 'next/cache';
 
 const twitterClient = new TwitterApi({
   appKey: process.env.TWITTER_API_KEY ?? "",
@@ -31,6 +32,8 @@ ${randomProject.description.join(" ")}
 ${randomProject.link}
 ${randomProject.date}
         `;
+
+    revalidateTag("posts")
 
     const res = await twitterClient.v2.tweet(message);
 
