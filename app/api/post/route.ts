@@ -30,7 +30,6 @@ ${randomProject.description.join(" ")}
 
 ${randomProject.link}
 ${randomProject.date}
-Im trying to automate a way to pub the stuff I make. This bot will pub my p5 art. Later ill pub my music and workouts and what not.
         `;
 
     const res = await twitterClient.v2.tweet(message);
