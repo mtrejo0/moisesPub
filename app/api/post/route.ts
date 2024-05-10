@@ -38,9 +38,6 @@ ${randomProject.date}
     revalidateTag("posts");
 
     let gifURL = randomProject.href;
-
-    console.log(gifURL.split("embed/")[1]);
-
     const id = gifURL.split("embed/")[1];
 
     gifURL = `https://media4.giphy.com/media/${id}/giphy.gif`;
@@ -64,7 +61,7 @@ ${randomProject.date}
     });
 
     // Upload the extracted frame to Twitter
-    const mediaUpload = await twitterClient.v1.uploadMedia(frameBuffer, {
+    const mediaUpload = await twitterClient.v1.uploadMedia(frameBuffer as Buffer, {
       mimeType: "png",
     });
 
