@@ -79,7 +79,6 @@ ${randomProject.date}
     });
   } catch (error) {
     console.error("Failed to retrieve user data:", error);
-    console.log(JSON.stringify(error.errors));
     return new Response(
       JSON.stringify({ error: "Failed to retrieve user data" }),
       { status: 500 },
