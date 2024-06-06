@@ -10,6 +10,37 @@ const twitterClient = new TwitterApi({
 });
 
 
+
+
+const sendRandomTrack = async () => { 
+
+
+  const tracks = [
+    {
+      "name": "Discoteca",
+      "link": "https://open.spotify.com/track/5z5v5S83TnXCDRFVuz9A37?si=c027e79a1e5f4d7f"
+    },
+    {
+      "name": "Fly High",
+      "link": "https://open.spotify.com/track/1rPR4fhHszuxEsXJlWgEAM?si=a2577f32e3414ab1"
+    }
+  ]
+
+  const track = tracks[Math.floor(Math.random() * tracks.length)]
+  console.log(track)
+
+  const message = `I also make music ;)\n\n${track.name}\n${track.link}`
+
+
+  const res = await twitterClient.v2.tweet(message);
+
+  console.log(res)
+
+  
+}
+
+
+
 export async function GET(req: Request) {
   try {
     console.log("Starting Twitter API client initialization.");
@@ -54,6 +85,8 @@ ${randomProject.date}
     const res = await twitterClient.v2.tweet(message, {
       media: { media_ids: [mediaUpload] },
     });
+
+    await sendRandomTrack()
     return new Response(JSON.stringify({ message: "Yay", res }), {
       status: 200,
     });
