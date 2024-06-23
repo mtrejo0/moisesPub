@@ -61,6 +61,29 @@ const sendTrackOfDay = async () => {
   console.log(res);
 }
 
+const sendMediumArticle = async () => { 
+  
+  const articles = await fetch(
+    "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@moises.trejo0"
+  )
+    .then((res) => res.json())
+    .then(async (data: any) => {
+      
+     return data.items
+
+    });
+    console.log(articles)
+
+    const articleIndex = getDayOfYear() % articles.length;
+    const article = articles[articleIndex];
+  
+    const message = `One of my medium articles:\n\n${article.title}\n\n${article.link}`;
+  
+    const res = await twitterClient.v2.tweet(message);
+    console.log(res);
+  
+}
+
 const sendProjectOfDay = async () => {
   const projectData = await axios.get(
     "https://raw.githubusercontent.com/mtrejo0/moisestrejo.com/master/src/information/p5jsProjects.json",
@@ -83,7 +106,7 @@ ${project.date}
   revalidateTag("posts");
 
   let gifURL = project.href;
-  const id = gifURL.split("embed/")[1];
+  const id = gifURL?.split("embed/")[1];
   gifURL = `https://media4.giphy.com/media/${id}/giphy.gif`;
 
   const mediaData = await axios.get(gifURL, { responseType: "arraybuffer" });
@@ -102,12 +125,11 @@ ${project.date}
 
 export async function GET(req: Request) {
   try {
-    console.log("Starting Twitter API client initialization.");
 
-    const res = await sendProjectOfDay();
+    await sendProjectOfDay();
 
-    // await sendTrackOfDay();
-    return new Response(JSON.stringify({ message: "Yay", res }), {
+    await sendMediumArticle();
+    return new Response(JSON.stringify({ message: "Yay" }), {
       status: 200,
     });
   } catch (error) {
