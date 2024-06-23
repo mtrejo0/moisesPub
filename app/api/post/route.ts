@@ -106,7 +106,7 @@ export async function GET(req: Request) {
 
     const res = await sendProjectOfDay();
 
-    await sendTrackOfDay();
+    // await sendTrackOfDay();
     return new Response(JSON.stringify({ message: "Yay", res }), {
       status: 200,
     });
