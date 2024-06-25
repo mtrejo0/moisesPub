@@ -77,7 +77,8 @@ const sendMediumArticle = async () => {
     const articleIndex = getDayOfYear() % articles.length;
     const article = articles[articleIndex];
   
-    const message = `One of my medium articles:\n\n${article.title}\n\n${article.link}`;
+    const timestamp = new Date().toDateString();
+    const message = `One of my medium articles:\n\n${article.title}\n\n${article.link}\n\n${timestamp}`;
   
     const res = await twitterClient.v2.tweet(message);
     console.log(res);
@@ -93,7 +94,7 @@ const sendProjectOfDay = async () => {
   const projectIndex = getDayOfYear() % projects.length;
   const project = projects[projectIndex];
 
-  project.date = new Date().toISOString();
+  project.date = new Date().toDateString();
   project.link = `https://moisestrejo.com/${project.id}`;
   const message = `
 ${project.name}
@@ -128,7 +129,8 @@ export async function GET(req: Request) {
 
     await sendProjectOfDay();
 
-    await sendMediumArticle();
+    const r = await sendMediumArticle();
+    console.log(r)
     return new Response(JSON.stringify({ message: "Yay" }), {
       status: 200,
     });
