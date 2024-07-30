@@ -78,7 +78,15 @@ const sendMediumArticle = async () => {
     const article = articles[articleIndex];
   
     const timestamp = new Date().toDateString();
-    const message = `One of my medium articles:\n\n${article.title}\n\n${article.link}\n\n${timestamp}`;
+    const message = `One of my medium articles:
+
+${article.title}
+
+${article.link}
+
+#medium #writing
+
+${timestamp}`;
   
     const res = await twitterClient.v2.tweet(message);
     console.log(res);
@@ -101,6 +109,9 @@ ${project.name}
 ${project.description.join(" ")}
 
 ${project.link}
+
+#p5js #generativeart
+
 ${project.date}
   `;
 
