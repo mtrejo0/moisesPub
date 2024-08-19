@@ -72,8 +72,6 @@ const sendMediumArticle = async () => {
      return data.items
 
     });
-    console.log(articles)
-
     const articleIndex = getDayOfYear() % articles.length;
     const article = articles[articleIndex];
   
@@ -110,7 +108,7 @@ ${project.description.join(" ")}
 
 ${project.link}
 
-#p5js #generativeart
+#${project.id} #p5js #generativeart
 
 ${project.date}
   `;
@@ -135,13 +133,21 @@ ${project.date}
   return res;
 }
 
+
+
 export async function GET(req: Request) {
   try {
 
     await sendProjectOfDay();
 
-    const r = await sendMediumArticle();
-    console.log(r)
+    // await sendMediumArticle();
+
+    const beActiveMessage = `Hello tl, Im looking to network with gym owners who want to help build more social connection in their gyms. Im looking for martial arts gym owners, cycle gyms, barre gyms stuff like that. Please let me know, thank you!
+
+${new Date().toDateString()}`;
+
+    await twitterClient.v2.tweet(beActiveMessage)
+
     return new Response(JSON.stringify({ message: "Yay" }), {
       status: 200,
     });
