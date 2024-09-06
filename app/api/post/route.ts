@@ -97,7 +97,8 @@ const sendProjectOfDay = async () => {
   );
   const projects = projectData.data;
 
-  const projectIndex = getDayOfYear() % projects.length;
+  // Generate a random index instead of using getDayOfYear
+  const projectIndex = Math.floor(Math.random() * projects.length);
   const project = projects[projectIndex];
 
   project.date = new Date().toDateString();
@@ -142,11 +143,11 @@ export async function GET(req: Request) {
 
     // await sendMediumArticle();
 
-    const beActiveMessage = `Hello tl, Im looking to network with gym owners who want to help build more social connection in their gyms. Im looking for martial arts gym owners, cycle gyms, barre gyms stuff like that. Please let me know, thank you!
+//     const beActiveMessage = `Hello tl, Im looking to network with gym owners who want to help build more social connection in their gyms. Im looking for martial arts gym owners, cycle gyms, barre gyms stuff like that. Please let me know, thank you!
 
-${new Date().toDateString()}`;
+// ${new Date().toDateString()}`;
 
-    await twitterClient.v2.tweet(beActiveMessage)
+//     await twitterClient.v2.tweet(beActiveMessage)
 
     return new Response(JSON.stringify({ message: "Yay" }), {
       status: 200,
