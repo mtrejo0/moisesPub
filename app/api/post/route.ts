@@ -11,86 +11,6 @@ const twitterClient = new TwitterApi({
 
 const getDayOfYear = () => Math.floor((new Date().getTime() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 1000 / 60 / 60 / 24);
 
-const sendTrackOfDay = async () => { 
-  const tracks = [
-    {
-      "name": "Discoteca",
-      "link": "https://open.spotify.com/track/5z5v5S83TnXCDRFVuz9A37?si=c027e79a1e5f4d7f"
-    },
-    {
-      "name": "Fly High",
-      "link": "https://open.spotify.com/track/1rPR4fhHszuxEsXJlWgEAM?si=a2577f32e3414ab1"
-    },
-    {
-      "name": "GPT Beat",
-      "link": "https://open.spotify.com/track/2YRVX4lWQYSdDEbuUgJCXb?si=fcf4ce1e7ec34121"
-    },
-    {
-      "name": "Moises Again ...",
-      "link": "https://open.spotify.com/track/3Q7y3wKLbGgu0V4BcSET1b?si=ef08402e48c94474"
-    },
-    {
-      "name": "Angles - 128 BPM",
-      "link": "https://open.spotify.com/track/4fydAE1pCOpWSlF6cHCafM?si=80c99c5af3dd4d8c"
-    },
-    {
-      "name": "el techno",
-      "link": "https://open.spotify.com/track/7K8AV1gm5UgUr5kL8LKneJ?si=d7d9cd9639c041df"
-    },
-    {
-      "name": "Tsunami",
-      "link": "https://open.spotify.com/track/5unxnWzikVXeuYdjPkEk98?si=7096e21525014a3a"
-    },
-    {
-      "name": "Triggered",
-      "link": "https://open.spotify.com/track/3MrdQROwqElVgSaESuuIGW?si=d85c138577de4666"
-    },
-    {
-      "name": "Floating - 125 BPM",
-      "link": "https://open.spotify.com/track/4m05p0A2nQA5XX3OTbe5LX?si=efc45b73af544e33"
-    }
-  ];
-
-  const trackIndex = getDayOfYear() % tracks.length;
-  const track = tracks[trackIndex];
-  console.log(track);
-
-  const message = `I also make music ;)\n\n${track.link}`;
-
-  const res = await twitterClient.v2.tweet(message);
-  console.log(res);
-}
-
-const sendMediumArticle = async () => { 
-  
-  const articles = await fetch(
-    "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@moises.trejo0"
-  )
-    .then((res) => res.json())
-    .then(async (data: any) => {
-      
-     return data.items
-
-    });
-    const articleIndex = getDayOfYear() % articles.length;
-    const article = articles[articleIndex];
-  
-    const timestamp = new Date().toDateString();
-    const message = `One of my medium articles:
-
-${article.title}
-
-${article.link}
-
-#medium #writing
-
-${timestamp}`;
-  
-    const res = await twitterClient.v2.tweet(message);
-    console.log(res);
-  
-}
-
 const sendProjectOfDay = async () => {
   const projectData = await axios.get(
     "https://raw.githubusercontent.com/mtrejo0/moisestrejo.com/master/src/information/p5jsProjects.json",
@@ -109,7 +29,7 @@ ${project.description.join(" ")}
 
 ${project.link}
 
-#${project.id} #p5js #generativeart
+#${project.id} #p5js #generativeart #moisestrejo
 
 ${project.date}
   `;
@@ -133,21 +53,42 @@ ${project.date}
 
   return res;
 }
+const sendExternalApp = async () => {
+  const externalAppData = await axios.get(
+    "https://raw.githubusercontent.com/mtrejo0/moisestrejo.com/master/src/information/externalApps.json",
+  );
+  const externalApps = externalAppData.data;
 
+  const appIndex = Math.floor(Math.random() * externalApps.length);
+  const app = externalApps[appIndex];
 
+  app.date = new Date().toDateString();
+  const message = `
+${app.name}
+${app.description}
+
+moisestrejo.com/${app.id}
+
+Built with: ${app.resources}
+
+#${app.id} #app #showcase #moisestrejo
+
+${app.date}
+
+${app.video && `https://www.youtube.com/watch?v=${app.video}`}
+  `;
+
+  revalidateTag("posts");
+
+  const res = await twitterClient.v2.tweet(message);
+
+  return res;
+}
 
 export async function GET(req: Request) {
   try {
-
     await sendProjectOfDay();
-
-    // await sendMediumArticle();
-
-//     const beActiveMessage = `Hello tl, Im looking to network with gym owners who want to help build more social connection in their gyms. Im looking for martial arts gym owners, cycle gyms, barre gyms stuff like that. Please let me know, thank you!
-
-// ${new Date().toDateString()}`;
-
-//     await twitterClient.v2.tweet(beActiveMessage)
+    await sendExternalApp();
 
     return new Response(JSON.stringify({ message: "Yay" }), {
       status: 200,
