@@ -4,7 +4,7 @@ export const sendMediumArticle = async () => {
     "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@moises.trejo0"
   )
     .then((res) => res.json())
-    .then(async (data: any) => {
+    .then(async (data) => {
       
      return data.items
 
